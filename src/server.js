@@ -4,6 +4,7 @@ import cors from 'cors';
 
 import { getEnvVar } from './utils/getEnvVar.js';
 import { getAllStudents, getStudentById } from './services/students.js';
+import { getAllContacts, getContactById } from './services/contacts.js';
 
 const PORT = Number(getEnvVar('PORT', 8700));
 
@@ -32,16 +33,34 @@ export const startServer = () => {
     res.json(students);
   });
 
-  app.get('/students/:studentId', async (req, res) => {
-    const { studentId } = req.params;
-    const student = await getStudentById(studentId);
-    if (!student) {
-      res.status(404).json({
+  app.get('/students/:id', async (req, res) => {
+    const { id } = req.params;
+    const student = await getStudentById(id);
+
+    if (student === null) {
+      return res.status(404).json({
         message: 'Student not found',
       });
-      return;
     }
+
     res.json(student);
+  });
+
+  app.get('/contacts', async (req, res) => {
+    const contacts = await getAllContacts();
+    res.json(contacts);
+  });
+
+  app.get('/contacts/:id', async (req, res) => {
+    const { id } = req.params;
+    const contact = await getContactById(id);
+    if (contact === null) {
+      return res.status(404).json({
+        message: 'Contact not found',
+      });
+    }
+
+    res.json(contact);
   });
 
   app.use((req, res) => {

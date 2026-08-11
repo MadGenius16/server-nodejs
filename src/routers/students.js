@@ -9,20 +9,43 @@ import {
   patchStudentController,
   upsertStudentController,
 } from '../controllers/students.js';
+import { validateBody } from '../middlewares/validateBody.js';
+import {
+  createStudentSchema,
+  updateStudentSchema,
+} from '../validation/students.js';
+import { isValidId } from '../middlewares/isValidId.js';
 
 const router = express.Router();
 const jsonParser = express.json();
 
 router.get('/students', ctrlWrapper(getStudentsController));
 
-router.get('/students/:id', ctrlWrapper(getStudentByIdController));
+router.get('/students/:id', isValidId, ctrlWrapper(getStudentByIdController));
 
-router.post('/students', jsonParser, ctrlWrapper(createStudentController));
+router.post(
+  '/students',
+  jsonParser,
+  validateBody(createStudentSchema),
+  ctrlWrapper(createStudentController),
+);
 
 router.delete('/students/:id', ctrlWrapper(deleteStudentController));
 
-router.put('/students/:id', jsonParser, ctrlWrapper(upsertStudentController));
+router.put(
+  '/students/:id',
+  jsonParser,
+  isValidId,
+  validateBody(createStudentSchema),
+  ctrlWrapper(upsertStudentController),
+);
 
-router.patch('/students/:id', jsonParser, ctrlWrapper(patchStudentController));
+router.patch(
+  '/students/:id',
+  jsonParser,
+  isValidId,
+  validateBody(updateStudentSchema),
+  ctrlWrapper(patchStudentController),
+);
 
 export default router;

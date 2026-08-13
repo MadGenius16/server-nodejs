@@ -30,7 +30,7 @@ router.post(
   ctrlWrapper(createStudentController),
 );
 
-router.delete('/students/:id', ctrlWrapper(deleteStudentController));
+router.delete('/students/:id', isValidId, ctrlWrapper(deleteStudentController));
 
 router.put(
   '/students/:id',

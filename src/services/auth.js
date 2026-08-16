@@ -9,11 +9,9 @@ export const registerUser = async (payload) => {
   const user = await UsersCollection.findOne({ email: payload.email });
   if (user) throw createHttpError(409, 'Email in use');
 
-  const encryptedPassword = await bcrypt.hash(payload.password, 10);
-  return await UsersCollection.create({
-    ...payload,
-    password: encryptedPassword,
-  });
+  payload.password = await bcrypt.hash(payload.password, 10);
+
+  return await UsersCollection.create(payload);
 };
 
 export const loginUser = async (payload) => {
@@ -33,5 +31,39 @@ export const loginUser = async (payload) => {
     refreshToken,
     accessTokenValidUntil: new Date(Date.now() + FIFTEEN_MINUTES),
     refreshTokenValidUntil: new Date(Date.now() + ONE_DAY),
+  });
+};
+
+export const logoutUser = async (sessionid) => {
+  await SessionsCollection.deleteOne({ _id: sessionid });
+};
+
+const createSession = () => {
+  const accessToken = randomBytes(30).toString('base64');
+  const refreshToken = randomBytes(30).toString('base64');
+
+  return {
+    accessToken,
+    refreshToken,
+    accessTokenValidUntil: new Date(Date.now() + FIFTEEN_MINUTES),
+    refreshTokenValidUntil: new Date(Date.now() + ONE_DAY),
+  };
+};
+
+export const refreshUsersSession = async ({ sessionId, refreshToken }) => {
+  const session = await SessionsCollection.findOne({
+    _id: sessionId,
+    refreshToken,
+  });
+  if (!session) throw createHttpError(401, 'Session not found');
+  if (new Date() > new Date(session.refreshTokenValidUntil)) {
+    throw createHttpError(401, 'Session expired');
+  }
+  await SessionsCollection.deleteOne({ _id: sessionId, refreshToken });
+
+  const newSession = createSession();
+  return await SessionsCollection.create({
+    userId: session.userId,
+    ...newSession,
   });
 };

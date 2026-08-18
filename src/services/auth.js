@@ -38,17 +38,17 @@ export const logoutUser = async (sessionid) => {
   await SessionsCollection.deleteOne({ _id: sessionid });
 };
 
-const createSession = () => {
-  const accessToken = randomBytes(30).toString('base64');
-  const refreshToken = randomBytes(30).toString('base64');
+// const createSession = () => {
+//   const accessToken = randomBytes(30).toString('base64');
+//   const refreshToken = randomBytes(30).toString('base64');
 
-  return {
-    accessToken,
-    refreshToken,
-    accessTokenValidUntil: new Date(Date.now() + FIFTEEN_MINUTES),
-    refreshTokenValidUntil: new Date(Date.now() + ONE_DAY),
-  };
-};
+//   return {
+//     accessToken,
+//     refreshToken,
+//     accessTokenValidUntil: new Date(Date.now() + FIFTEEN_MINUTES),
+//     refreshTokenValidUntil: new Date(Date.now() + ONE_DAY),
+//   };
+// };
 
 export const refreshUsersSession = async ({ sessionId, refreshToken }) => {
   const session = await SessionsCollection.findOne({
@@ -59,11 +59,14 @@ export const refreshUsersSession = async ({ sessionId, refreshToken }) => {
   if (new Date() > new Date(session.refreshTokenValidUntil)) {
     throw createHttpError(401, 'Session expired');
   }
+
   await SessionsCollection.deleteOne({ _id: sessionId, refreshToken });
 
-  const newSession = createSession();
   return await SessionsCollection.create({
     userId: session.userId,
-    ...newSession,
+    accessToken: randomBytes(30).toString('base64'),
+    refreshToken: randomBytes(30).toString('base64'),
+    accessTokenValidUntil: new Date(Date.now() + FIFTEEN_MINUTES),
+    refreshTokenValidUntil: new Date(Date.now() + ONE_DAY),
   });
 };

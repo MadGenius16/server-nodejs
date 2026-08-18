@@ -8,6 +8,7 @@ export const getAllStudents = async ({
   sortBy = '_id',
   sortOrder = SORT_ORDER.ASC,
   filter = {},
+  parentId,
 }) => {
   const limit = perPage;
   const skip = (page - 1) * perPage;
@@ -28,6 +29,13 @@ export const getAllStudents = async ({
   if (filter.minAvgMark) {
     studentsQuery.where('avgMark').gte(filter.minAvgMark);
   }
+
+  if (parentId) {
+    studentsQuery.where('parentId').equals(parentId);
+  }
+
+  //  все студенты  родителей
+
   // const studentsCount = await StudentsCollection.find()
   //   .merge(studentsQuery)
   //   .countDocuments();

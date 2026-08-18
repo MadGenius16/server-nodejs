@@ -37,8 +37,8 @@ router.get(
 
 router.post(
   '/',
-  checkRoles(ROLES.TEACHER, ROLES.PARENT),
   jsonParser,
+  checkRoles(ROLES.TEACHER, ROLES.PARENT),
   validateBody(createStudentSchema),
   ctrlWrapper(createStudentController),
 );
@@ -52,8 +52,8 @@ router.delete(
 
 router.put(
   '/:id',
-  checkRoles(ROLES.TEACHER),
   jsonParser,
+  checkRoles(ROLES.TEACHER),
   isValidId,
   validateBody(createStudentSchema),
   ctrlWrapper(upsertStudentController),
@@ -61,8 +61,8 @@ router.put(
 
 router.patch(
   '/:id',
-  checkRoles(ROLES.TEACHER, ROLES.PARENT),
   jsonParser,
+  checkRoles(ROLES.TEACHER, ROLES.PARENT),
   isValidId,
   validateBody(updateStudentSchema),
   ctrlWrapper(patchStudentController),

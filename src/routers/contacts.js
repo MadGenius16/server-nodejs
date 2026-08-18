@@ -15,28 +15,43 @@ import {
   createContactsSchema,
   updateContactsSchema,
 } from '../validation/contacts.js';
-import { authenticate } from '../middlewares/authenticate.js';
+import { checkRoles } from '../middlewares/checkRoles.js';
+import { ROLES } from '../constants/index.js';
 
 const router = express.Router();
 const jsonParser = express.json();
 
-router.use(authenticate);
+router.get(
+  '/',
+  checkRoles(ROLES.TEACHER, ROLES.PARENT),
+  ctrlWrapper(getContactsController),
+);
 
-router.get('/', ctrlWrapper(getContactsController));
-
-router.get('/:id', isValidId, ctrlWrapper(getContactByIdController));
+router.get(
+  '/:id',
+  checkRoles(ROLES.TEACHER, ROLES.PARENT),
+  isValidId,
+  ctrlWrapper(getContactByIdController),
+);
 
 router.post(
   '/',
   jsonParser,
+  checkRoles(ROLES.TEACHER, ROLES.PARENT),
   validateBody(createContactsSchema),
   ctrlWrapper(createContactController),
 );
-router.delete('/contacts/:id', isValidId, ctrlWrapper(deleteContactController));
+router.delete(
+  '/:id',
+  checkRoles(ROLES.TEACHER, ROLES.PARENT),
+  isValidId,
+  ctrlWrapper(deleteContactController),
+);
 
 router.put(
   '/:id',
   jsonParser,
+  checkRoles(ROLES.TEACHER),
   isValidId,
   validateBody(updateContactsSchema),
   ctrlWrapper(upsertContactController),
@@ -45,6 +60,7 @@ router.put(
 router.patch(
   '/:id',
   jsonParser,
+  checkRoles(ROLES.TEACHER, ROLES.PARENT),
   isValidId,
   validateBody(updateContactsSchema),
   ctrlWrapper(patchContactController),

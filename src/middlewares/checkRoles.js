@@ -4,6 +4,7 @@ import createHttpError from 'http-errors';
 
 import { StudentsCollection } from '../db/models/student.js';
 import { ROLES } from '../constants/index.js';
+import { ContactsCollection } from '../db/models/contacts.js';
 
 export const checkRoles =
   (...roles) =>
@@ -36,6 +37,14 @@ export const checkRoles =
       });
 
       if (student) {
+        next();
+        return;
+      }
+      const contact = await ContactsCollection.findOne({
+        _id: id,
+        parentId: user._id,
+      });
+      if (contact) {
         next();
         return;
       }

@@ -9,18 +9,25 @@ import {
 import { parsePaginationParams } from '../utils/parsePaginationParams.js';
 import { parseSortParams } from '../utils/parseSortParams.js';
 import { parseFilterContactParams } from '../utils/parseFilterContactParams.js';
+import { ROLES } from '../constants/index.js';
 
 export const getContactsController = async (req, res) => {
   const { page, perPage } = parsePaginationParams(req.query);
   const { sortBy, sortOrder } = parseSortParams(req.query);
   const filter = parseFilterContactParams(req.query);
-  const contacts = await getAllContacts({
+
+  const contactFilter = {
     page,
     perPage,
     sortBy,
     sortOrder,
     filter,
-  });
+  };
+  if (req.user.role === ROLES.PARENT) {
+    contactFilter.parentId = req.user._id;
+  }
+
+  const contacts = await getAllContacts(contactFilter);
   res.status(200).json({
     status: 200,
     message: 'Successfully found contacts!',
@@ -42,7 +49,11 @@ export const getContactByIdController = async (req, res) => {
 };
 
 export const createContactController = async (req, res) => {
-  const contact = await createContact(req.body);
+  const newContact = {
+    ...req.body,
+    parentId: req.user._id,
+  };
+  const contact = await createContact(newContact);
   res.status(201).json({
     status: 201,
     message: 'Successfully created contact!',

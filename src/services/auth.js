@@ -3,12 +3,7 @@ import { UsersCollection } from '../db/models/user.js';
 import bcrypt from 'bcrypt';
 import { SessionsCollection } from '../db/models/session.js';
 import { randomBytes } from 'crypto';
-import {
-  FIFTEEN_MINUTES,
-  ONE_DAY,
-  SMTP,
-  TEMPLATES_DIR,
-} from '../constants/index.js';
+import { FIFTEEN_MINUTES, ONE_DAY, SMTP } from '../constants/index.js';
 import jwt from 'jsonwebtoken';
 import { getEnvVar } from '../utils/getEnvVar.js';
 import { sendEmail } from '../utils/sendMail.js';
@@ -99,14 +94,12 @@ export const requestResetToken = async (email) => {
     },
   );
 
-  const resetPasswordTemplatePath = path.join(
-    TEMPLATES_DIR,
-    'reset-password-email.html',
+  const templateSource = await fs.readFile(
+    path.resolve('src/templates/reset-password-email.html'),
+    {
+      encoding: 'utf-8',
+    },
   );
-
-  const templateSource = (
-    await fs.readFile(resetPasswordTemplatePath)
-  ).toString();
 
   const template = handlebars.compile(templateSource);
   const html = template({
@@ -122,11 +115,11 @@ export const requestResetToken = async (email) => {
   });
 };
 
-export const resetPassword = async (payload) => {
+export const resetPassword = async (password, token) => {
   let entries;
 
   try {
-    entries = jwt.verify(payload.token, getEnvVar('JWT_SECRET'));
+    entries = jwt.verify(token, getEnvVar('JWT_SECRET'));
   } catch (err) {
     if (err instanceof Error) throw createHttpError(401, err.message);
     throw err;
@@ -141,10 +134,11 @@ export const resetPassword = async (payload) => {
     throw createHttpError(404, 'User not found');
   }
 
-  const encryptedPassword = await bcrypt.hash(payload.password, 10);
+  const encryptedPassword = await bcrypt.hash(password, 10);
 
   await UsersCollection.updateOne(
     { _id: user._id },
     { password: encryptedPassword },
   );
+  await SessionsCollection.deleteMany({ userId: user._id });
 };

@@ -30,21 +30,19 @@ export const checkRoles =
         return;
       }
 
-      // Если id указан, проверяем, что студент принадлежит этому родителю.
-      const student = await StudentsCollection.findOne({
-        _id: id,
-        parentId: user._id,
-      });
+      // Если id указан, проверяем, что запись (студент или контакт) принадлежит этому родителю.
+      const [student, contact] = await Promise.all([
+        StudentsCollection.findOne({
+          _id: id,
+          parentId: user._id,
+        }),
+        ContactsCollection.findOne({
+          _id: id,
+          parentId: user._id,
+        }),
+      ]);
 
-      if (student) {
-        next();
-        return;
-      }
-      const contact = await ContactsCollection.findOne({
-        _id: id,
-        parentId: user._id,
-      });
-      if (contact) {
+      if (student || contact) {
         next();
         return;
       }

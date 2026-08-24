@@ -18,6 +18,7 @@ import { isValidId } from '../middlewares/isValidId.js';
 
 import { checkRoles } from '../middlewares/checkRoles.js';
 import { ROLES } from '../constants/index.js';
+import { upload } from '../middlewares/multer.js';
 
 const router = express.Router();
 const jsonParser = express.json();
@@ -39,6 +40,7 @@ router.post(
   '/',
   jsonParser,
   checkRoles(ROLES.TEACHER, ROLES.PARENT),
+  upload.single('photo'),
   validateBody(createStudentSchema),
   ctrlWrapper(createStudentController),
 );
@@ -54,6 +56,7 @@ router.put(
   '/:id',
   jsonParser,
   checkRoles(ROLES.TEACHER),
+  upload.single('photo'),
   isValidId,
   validateBody(createStudentSchema),
   ctrlWrapper(upsertStudentController),
@@ -63,6 +66,7 @@ router.patch(
   '/:id',
   jsonParser,
   checkRoles(ROLES.TEACHER, ROLES.PARENT),
+  upload.single('photo'),
   isValidId,
   validateBody(updateStudentSchema),
   ctrlWrapper(patchStudentController),

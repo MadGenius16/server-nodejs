@@ -29,6 +29,10 @@ const studentsShema = new Schema(
       ref: 'users',
       required: true,
     },
+    photo: {
+      type: String,
+      default: null,
+    },
   },
   {
     timestamps: true,

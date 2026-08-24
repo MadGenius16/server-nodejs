@@ -29,8 +29,9 @@ router.get(
 
 router.get(
   '/:id',
-  checkRoles(ROLES.TEACHER, ROLES.PARENT),
   isValidId,
+  checkRoles(ROLES.TEACHER, ROLES.PARENT),
+
   ctrlWrapper(getContactByIdController),
 );
 
@@ -43,16 +44,16 @@ router.post(
 );
 router.delete(
   '/:id',
-  checkRoles(ROLES.TEACHER, ROLES.PARENT),
   isValidId,
+  checkRoles(ROLES.TEACHER, ROLES.PARENT),
   ctrlWrapper(deleteContactController),
 );
 
 router.put(
   '/:id',
   jsonParser,
-  checkRoles(ROLES.TEACHER),
   isValidId,
+  checkRoles(ROLES.TEACHER),
   validateBody(updateContactsSchema),
   ctrlWrapper(upsertContactController),
 );
@@ -60,8 +61,8 @@ router.put(
 router.patch(
   '/:id',
   jsonParser,
-  checkRoles(ROLES.TEACHER, ROLES.PARENT),
   isValidId,
+  checkRoles(ROLES.TEACHER, ROLES.PARENT),
   validateBody(updateContactsSchema),
   ctrlWrapper(patchContactController),
 );

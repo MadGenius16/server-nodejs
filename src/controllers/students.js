@@ -10,7 +10,9 @@ import { parsePaginationParams } from '../utils/parsePaginationParams.js';
 import { parseSortParams } from '../utils/parseSortParams.js';
 import { parseFilterParams } from '../utils/parseFilterParams.js';
 import { ROLES } from '../constants/index.js';
-
+import { saveFileToUploadDir } from '../utils/saveFileToUploadDir.js';
+import { saveFileToCloudinary } from '../utils/saveFileToCloudinary.js';
+import { getEnvVar } from '../utils/getEnvVar.js';
 export const getStudentsController = async (req, res) => {
   const { page, perPage } = parsePaginationParams(req.query);
   const { sortBy, sortOrder } = parseSortParams(req.query);
@@ -57,9 +59,17 @@ export const getStudentByIdController = async (req, res) => {
 };
 
 export const createStudentController = async (req, res) => {
+  const photo = req.file;
+
+  let photoUrl;
+
+  if (photo) {
+    photoUrl = await saveFileToUploadDir(photo);
+  }
   const newStudent = {
     ...req.body,
     parentId: req.user._id,
+    ...(photoUrl && { photo: photoUrl }),
   };
   const student = await createStudent(newStudent);
   res.status(201).json({
@@ -84,9 +94,29 @@ export const deleteStudentController = async (req, res) => {
 
 export const upsertStudentController = async (req, res) => {
   const { id } = req.params;
-  const result = await updateStudent(id, req.body, {
-    upsert: true,
-  });
+  const photo = req.file;
+
+  let photoUrl;
+
+  if (photo) {
+    photoUrl = await saveFileToUploadDir(photo);
+  }
+
+  // const result = await updateStudent(id, {
+  //   ...req.body,
+  //   ...(photoUrl && { photo: photoUrl }),
+  // });
+
+  const result = await updateStudent(
+    id,
+    {
+      ...req.body,
+      ...(photoUrl && { photo: photoUrl }),
+    },
+    {
+      upsert: true,
+    },
+  );
 
   if (!result) {
     throw createHttpError((404, 'Student not found'));
@@ -101,12 +131,28 @@ export const upsertStudentController = async (req, res) => {
   });
 };
 
-export const patchStudentController = async (req, res) => {
+export const patchStudentController = async (req, res, next) => {
   const { id } = req.params;
-  const result = await updateStudent(id, req.body);
+  const photo = req.file;
+
+  let photoUrl;
+
+  if (photo) {
+    if (getEnvVar('ENABLE_CLOUDINARY') === 'true') {
+      photoUrl = await saveFileToCloudinary(photo);
+    } else {
+      photoUrl = await saveFileToUploadDir(photo);
+    }
+  }
+
+  const result = await updateStudent(id, {
+    ...req.body,
+    ...(photoUrl && { photo: photoUrl }),
+  });
 
   if (!result) {
-    throw createHttpError((404, 'Student not found'));
+    next(createHttpError(404, 'Student not found'));
+    return;
   }
 
   res.status(200).json({

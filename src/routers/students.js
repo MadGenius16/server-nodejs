@@ -1,5 +1,4 @@
 import express from 'express';
-
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 import {
   createStudentController,

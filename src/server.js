@@ -27,6 +27,8 @@ export const startServer = () => {
     }),
   );
 
+  app.use('/uploads', express.static(UPLOAD_DIR));
+
   app.get('/', (req, res) => {
     res.json({
       message: 'Hello world!',
@@ -34,8 +36,6 @@ export const startServer = () => {
   });
 
   app.use(router);
-
-  app.use('/uploads', express.static(UPLOAD_DIR));
 
   app.use(notFoundHandler);
 

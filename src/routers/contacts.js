@@ -17,6 +17,7 @@ import {
 } from '../validation/contacts.js';
 import { checkRoles } from '../middlewares/checkRoles.js';
 import { ROLES } from '../constants/index.js';
+import { upload } from '../middlewares/multer.js';
 
 const router = express.Router();
 const jsonParser = express.json();
@@ -39,6 +40,7 @@ router.post(
   '/',
   jsonParser,
   checkRoles(ROLES.TEACHER, ROLES.PARENT),
+  upload.single('photo'),
   validateBody(createContactsSchema),
   ctrlWrapper(createContactController),
 );
@@ -54,6 +56,7 @@ router.put(
   jsonParser,
   isValidId,
   checkRoles(ROLES.TEACHER),
+  upload.single('photo'),
   validateBody(updateContactsSchema),
   ctrlWrapper(upsertContactController),
 );
@@ -63,6 +66,7 @@ router.patch(
   jsonParser,
   isValidId,
   checkRoles(ROLES.TEACHER, ROLES.PARENT),
+  upload.single('photo'),
   validateBody(updateContactsSchema),
   ctrlWrapper(patchContactController),
 );

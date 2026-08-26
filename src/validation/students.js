@@ -20,9 +20,9 @@ export const createStudentSchema = Joi.object({
     'string.valid': 'Gender must be "male", "female" or "other"',
     'any.required': 'Gender is required',
   }),
-  avgMark: Joi.number().min(2).max(15).required().messages({
+  avgMark: Joi.number().min(1).max(15).required().messages({
     'number.base': 'Average mark must be a number',
-    'number.min': 'Average mark must be at least 2',
+    'number.min': 'Average mark must be at least 1',
     'number.max': 'Average mark must be at most 15',
     'any.required': 'Average mark is required',
   }),

@@ -6,7 +6,10 @@
   "scripts": {
     "start": "node ./src/index.js",
     "dev": "nodemon src/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npm run build-docs",
+    "build-docs": "redocly bundle docs/openapi.yaml --ext json -o docs/swagger.json",
+    "preview-docs": "redocly preview-docs"
   },
   "repository": {
     "type": "git",
@@ -22,6 +25,7 @@
   "homepage": "https://github.com/MadGenius16/server-nodejs#readme",
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@redocly/cli": "^2.48.0",
     "eslint": "^10.8.0",
     "globals": "^17.9.0",
     "nodemon": "^3.1.14",
@@ -42,6 +46,7 @@
     "mongoose": "^9.9.1",
     "multer": "^2.2.0",
     "nodemailer": "^9.0.5",
-    "pino-http": "^11.0.0"
+    "pino-http": "^11.0.0",
+    "swagger-ui-express": "^5.0.1"
   }
 }

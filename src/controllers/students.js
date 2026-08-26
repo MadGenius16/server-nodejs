@@ -41,6 +41,7 @@ export const getStudentsController = async (req, res) => {
 export const getStudentByIdController = async (req, res) => {
   const { id } = req.params;
   const student = await getStudentById(id);
+
   // if (!student) {
   //   res.status(404).json({
   //     message: 'Student not found',

@@ -20,7 +20,6 @@ import { ROLES } from '../constants/index.js';
 import { upload } from '../middlewares/multer.js';
 
 const router = express.Router();
-const jsonParser = express.json();
 
 router.get(
   '/',
@@ -32,13 +31,11 @@ router.get(
   '/:id',
   isValidId,
   checkRoles(ROLES.TEACHER, ROLES.PARENT),
-
   ctrlWrapper(getContactByIdController),
 );
 
 router.post(
   '/',
-  jsonParser,
   checkRoles(ROLES.TEACHER, ROLES.PARENT),
   upload.single('photo'),
   validateBody(createContactsSchema),
@@ -53,7 +50,6 @@ router.delete(
 
 router.put(
   '/:id',
-  jsonParser,
   isValidId,
   checkRoles(ROLES.TEACHER),
   upload.single('photo'),
@@ -63,7 +59,6 @@ router.put(
 
 router.patch(
   '/:id',
-  jsonParser,
   isValidId,
   checkRoles(ROLES.TEACHER, ROLES.PARENT),
   upload.single('photo'),

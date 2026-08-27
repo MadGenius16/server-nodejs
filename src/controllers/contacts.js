@@ -81,10 +81,7 @@ export const deleteContactController = async (req, res) => {
   if (!contact) {
     throw createHttpError(404, 'Contact not found');
   }
-  res.status(204).json({
-    status: 204,
-    message: `Successfully deleted contact with id ${id}!`,
-  });
+  res.status(204).send();
 };
 
 export const upsertContactController = async (req, res) => {
@@ -100,12 +97,10 @@ export const upsertContactController = async (req, res) => {
       photoUrl = await saveFileToUploadDir(photo);
     }
   }
-  const contact = await upsertContact(
-    id,
+  const contact = await upsertContact(id, {
     ...req.body,
     ...(photoUrl && { photo: photoUrl }),
-  );
-  // console.log(contact);
+  });
   if (!contact) {
     throw createHttpError(404, 'Contact not found');
   }
@@ -129,11 +124,11 @@ export const patchContactController = async (req, res) => {
       photoUrl = await saveFileToUploadDir(photo);
     }
   }
-  const contact = await upsertContact(
-    id,
+  const contact = await upsertContact(id, {
     ...req.body,
     ...(photoUrl && { photo: photoUrl }),
-  );
+  });
+
   if (!contact) {
     throw createHttpError(404, 'Contact not found');
   }

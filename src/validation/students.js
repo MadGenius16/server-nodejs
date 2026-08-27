@@ -8,6 +8,13 @@ export const createStudentSchema = Joi.object({
     'string.max': 'Name must be at most 30 characters long',
     'any.required': 'Name is required',
   }),
+  email: Joi.string().email().min(5).max(40).required().messages({
+    'string.base': 'Email must be a string',
+    'string.email': 'Email must be valid',
+    'string.min': 'Email must be at least 5 characters long',
+    'string.max': 'Email must be at most 40 characters long',
+    'any.required': 'Email is required',
+  }),
   age: Joi.number().integer().min(10).max(90).required().messages({
     'number.base': 'Age must be a number',
     'number.integer': 'Age must be an integer',
@@ -42,6 +49,6 @@ export const updateStudentSchema = Joi.object({
   email: Joi.string().email(),
   age: Joi.number().integer().min(10).max(90),
   gender: Joi.string().valid('male', 'female', 'other'),
-  avgMark: Joi.number().min(2).max(12),
+  avgMark: Joi.number().min(1).max(15),
   onDuty: Joi.boolean(),
 });

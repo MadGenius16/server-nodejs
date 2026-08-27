@@ -92,10 +92,7 @@ export const deleteStudentController = async (req, res) => {
     throw createHttpError(404, 'Student not found');
   }
 
-  res.status(204).json({
-    status: 204,
-    message: `Successfully deleted student with id ${id}!`,
-  });
+  res.status(204).send();
 };
 
 export const upsertStudentController = async (req, res) => {
@@ -129,7 +126,7 @@ export const upsertStudentController = async (req, res) => {
   );
 
   if (!result) {
-    throw createHttpError((404, 'Student not found'));
+    throw createHttpError(404, 'Student not found');
   }
 
   const status = result.isNew ? 201 : 200;

@@ -18,18 +18,20 @@ const PORT = Number(getEnvVar('PORT', 8700));
 export const startServer = () => {
   const app = express();
 
-  app.use(express.json());
+  app.use(
+    cors({
+      origin: true,
+      credentials: true,
+      optionsSuccessStatus: 200,
+    }),
+  );
   app.use(
     helmet({
       contentSecurityPolicy: false,
+      crossOriginResourcePolicy: false,
     }),
   );
-  app.use(
-    cors({
-      origin: true, // дозволяє запити з localhost:5173, Vercel тощо
-      credentials: true, // дозволяє передавати cookie та заголовки авторизації
-    }),
-  );
+  app.use(express.json());
   app.use(cookieParser());
   app.use(
     pino({

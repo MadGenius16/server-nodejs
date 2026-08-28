@@ -24,7 +24,12 @@ export const startServer = () => {
       contentSecurityPolicy: false,
     }),
   );
-  app.use(cors());
+  app.use(
+    cors({
+      origin: true, // дозволяє запити з localhost:5173, Vercel тощо
+      credentials: true, // дозволяє передавати cookie та заголовки авторизації
+    }),
+  );
   app.use(cookieParser());
   app.use(
     pino({

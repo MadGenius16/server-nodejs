@@ -1,11 +1,11 @@
 import express from 'express';
 import pino from 'pino-http';
-import cors from 'cors';
 
 import { getEnvVar } from './utils/getEnvVar.js';
 // import studentsRouter from './routers/students.js';
 // import contactsRouter from './routers/contacts.js';
 import router from './routers/index.js';
+import { corsMiddleware } from './middlewares/corsMiddleware.js';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import cookieParser from 'cookie-parser';
@@ -18,13 +18,7 @@ const PORT = Number(getEnvVar('PORT', 8700));
 export const startServer = () => {
   const app = express();
 
-  app.use(
-    cors({
-      origin: true,
-      credentials: true,
-      optionsSuccessStatus: 200,
-    }),
-  );
+  app.use(corsMiddleware());
   app.use(
     helmet({
       contentSecurityPolicy: false,

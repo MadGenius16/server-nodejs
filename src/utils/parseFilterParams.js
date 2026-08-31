@@ -11,6 +11,13 @@ const parsePhoneNumber = (phoneNumber) => {
   return phoneNumber.trim();
 };
 
+const parseOnDuty = (value) => {
+  if (typeof value !== 'string') return undefined;
+  if (value.toLowerCase() === 'true') return true;
+  if (value.toLowerCase() === 'false') return false;
+  return undefined;
+};
+
 const parseNumber = (number) => {
   const isString = typeof number === 'string';
   if (!isString) return;
@@ -24,7 +31,7 @@ const parseNumber = (number) => {
 };
 
 export const parseFilterParams = (query) => {
-  const { gender, maxAge, minAge, maxAvgMark, minAvgMark,phoneNumber } = query;
+  const { gender, maxAge, minAge, maxAvgMark, minAvgMark,phoneNumber,onDuty } = query;
 
   const parsedPhoneNumber = parsePhoneNumber(phoneNumber);
   const parsedGender = parseGender(gender);
@@ -32,6 +39,7 @@ export const parseFilterParams = (query) => {
   const parsedMinAge = parseNumber(minAge);
   const parsedMaxAvgMark = parseNumber(maxAvgMark);
   const parsedMinAvgMark = parseNumber(minAvgMark);
+  const parsedOnDuty = parseOnDuty(onDuty);
 
   return {
     phoneNumber: parsedPhoneNumber,
@@ -40,5 +48,6 @@ export const parseFilterParams = (query) => {
     minAge: parsedMinAge,
     maxAvgMark: parsedMaxAvgMark,
     minAvgMark: parsedMinAvgMark,
+    onDuty: parsedOnDuty,
   };
 };

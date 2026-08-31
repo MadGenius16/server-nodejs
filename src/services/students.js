@@ -4,7 +4,7 @@ import { calculatePaginationData } from '../utils/calculatePaginationData.js';
 
 export const getAllStudents = async ({
   page = 1,
-  perPage = 10,
+  perPage = 12,
   sortBy = '_id',
   sortOrder = SORT_ORDER.ASC,
   filter = {},
@@ -31,6 +31,9 @@ export const getAllStudents = async ({
   }
   if (filter.phoneNumber) {
     studentsQuery.where('phoneNumber').equals(filter.phoneNumber);
+  }
+  if (filter.onDuty !== undefined && filter.onDuty !== null) {
+    studentsQuery.where('onDuty').equals(filter.onDuty);
   }
   if (parentId) {
     studentsQuery.where('parentId').equals(parentId);

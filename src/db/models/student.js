@@ -6,6 +6,11 @@ const studentsShema = new Schema(
       type: String,
       required: true,
     },
+    phoneNumber: {
+      type: String,
+      required: true,
+      default: '',
+    },
     email: {
       type: String,
       required: true,

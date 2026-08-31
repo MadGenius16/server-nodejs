@@ -11,10 +11,10 @@
   },
   "servers": [
     {
-      "url": "http://localhost:8700"
+      "url": "https://contacts-students-api.onrender.com"
     },
     {
-      "url": "https://example.com/api/v1"
+      "url": "https://contacts-students-api.onrender.com"
     }
   ],
   "tags": [
@@ -34,7 +34,9 @@
   "paths": {
     "/students": {
       "get": {
-        "tags": ["Students"],
+        "tags": [
+          "Students"
+        ],
         "summary": "Get list of students",
         "operationId": "getStudents",
         "description": "Get list of users with this endpoint",
@@ -74,7 +76,10 @@
             "name": "sortOrder",
             "schema": {
               "type": "string",
-              "enum": ["asc", "desc"],
+              "enum": [
+                "asc",
+                "desc"
+              ],
               "example": "asc"
             }
           },
@@ -83,7 +88,7 @@
             "name": "minAvgMark",
             "schema": {
               "type": "number",
-              "example": 2
+              "example": 5
             }
           },
           {
@@ -91,7 +96,7 @@
             "name": "maxAvgMark",
             "schema": {
               "type": "number",
-              "example": 15
+              "example": 10
             }
           },
           {
@@ -107,7 +112,7 @@
             "name": "maxAge",
             "schema": {
               "type": "number",
-              "example": 90
+              "example": 16
             }
           },
           {
@@ -115,7 +120,11 @@
             "name": "gender",
             "schema": {
               "type": "string",
-              "enum": ["male", "female", "other"],
+              "enum": [
+                "male",
+                "female",
+                "other"
+              ],
               "example": "male"
             }
           }
@@ -127,7 +136,11 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "required": ["status", "message", "data"],
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
                   "properties": {
                     "status": {
                       "type": "integer",
@@ -192,7 +205,9 @@
         }
       },
       "post": {
-        "tags": ["Students"],
+        "tags": [
+          "Students"
+        ],
         "summary": "Create student",
         "operationId": "createStudent",
         "description": "Create a student with payload",
@@ -206,27 +221,43 @@
             "multipart/form-data": {
               "schema": {
                 "type": "object",
-                "required": ["name", "age", "gender", "avgMark", "parentId"],
+                "required": [
+                  "name",
+                  "phoneNumber",
+                  "age",
+                  "gender",
+                  "avgMark",
+                  "parentId"
+                ],
                 "properties": {
                   "name": {
                     "description": "Student's name",
                     "type": "string",
                     "example": "John Doe"
                   },
+                  "phoneNumber": {
+                    "description": "Student's phone number",
+                    "type": "string",
+                    "example": "+380501234567"
+                  },
                   "age": {
                     "description": "Student's age",
                     "type": "number",
-                    "example": 10
+                    "example": 12
                   },
                   "gender": {
                     "description": "Student's gender",
                     "type": "string",
-                    "enum": ["male", "female", "other"]
+                    "enum": [
+                      "male",
+                      "female",
+                      "other"
+                    ]
                   },
                   "avgMark": {
-                    "description": "Student's average mark. Should be between 1 and 15",
+                    "description": "Student's average mark. Should be between 1 and 12",
                     "type": "number",
-                    "example": 9
+                    "example": 9.7
                   },
                   "onDuty": {
                     "description": "Whether is student on duty",
@@ -255,7 +286,11 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "required": ["status", "message", "data"],
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
                   "properties": {
                     "status": {
                       "type": "integer",
@@ -282,7 +317,9 @@
     },
     "/students/{id}": {
       "get": {
-        "tags": ["Students"],
+        "tags": [
+          "Students"
+        ],
         "summary": "Get student by id",
         "operationId": "getStudent",
         "description": "Get student by id",
@@ -309,7 +346,11 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "required": ["status", "message", "data"],
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
                   "properties": {
                     "status": {
                       "type": "integer",
@@ -334,7 +375,9 @@
         }
       },
       "delete": {
-        "tags": ["Students"],
+        "tags": [
+          "Students"
+        ],
         "summary": "Delete student by id",
         "operationId": "deleteStudent",
         "description": "Delete student by id",
@@ -364,7 +407,9 @@
         }
       },
       "put": {
-        "tags": ["Students"],
+        "tags": [
+          "Students"
+        ],
         "summary": "Upsert student by id",
         "operationId": "upsertStudent",
         "description": "Create or replace student by id",
@@ -389,12 +434,24 @@
             "multipart/form-data": {
               "schema": {
                 "type": "object",
-                "required": ["name", "age", "gender", "avgMark", "parentId"],
+                "required": [
+                  "name",
+                  "phoneNumber",
+                  "age",
+                  "gender",
+                  "avgMark",
+                  "parentId"
+                ],
                 "properties": {
                   "name": {
                     "description": "Student's name",
                     "type": "string",
                     "example": "John Doe"
+                  },
+                  "phoneNumber": {
+                    "description": "Student's phone number",
+                    "type": "string",
+                    "example": "+380501234567"
                   },
                   "age": {
                     "description": "Student's age",
@@ -404,12 +461,16 @@
                   "gender": {
                     "description": "Student's gender",
                     "type": "string",
-                    "enum": ["male", "female", "other"]
+                    "enum": [
+                      "male",
+                      "female",
+                      "other"
+                    ]
                   },
                   "avgMark": {
-                    "description": "Student's average mark. Should be between 1 and 15",
+                    "description": "Student's average mark. Should be between 1 and 12",
                     "type": "number",
-                    "example": 9
+                    "example": 9.7
                   },
                   "onDuty": {
                     "description": "Whether is student on duty",
@@ -438,7 +499,11 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "required": ["status", "message", "data"],
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
                   "properties": {
                     "status": {
                       "type": "integer",
@@ -463,7 +528,11 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "required": ["status", "message", "data"],
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
                   "properties": {
                     "status": {
                       "type": "integer",
@@ -488,7 +557,9 @@
         }
       },
       "patch": {
-        "tags": ["Students"],
+        "tags": [
+          "Students"
+        ],
         "summary": "Patch student by id",
         "operationId": "patchStudent",
         "description": "Partially update student by id",
@@ -518,17 +589,25 @@
                     "type": "string",
                     "example": "John Doe"
                   },
+                  "phoneNumber": {
+                    "type": "string",
+                    "example": "+380501234567"
+                  },
                   "age": {
                     "type": "number",
                     "example": 12
                   },
                   "gender": {
                     "type": "string",
-                    "enum": ["male", "female", "other"]
+                    "enum": [
+                      "male",
+                      "female",
+                      "other"
+                    ]
                   },
                   "avgMark": {
                     "type": "number",
-                    "example": 9
+                    "example": 9.7
                   },
                   "onDuty": {
                     "type": "boolean",
@@ -554,7 +633,11 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "required": ["status", "message", "data"],
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
                   "properties": {
                     "status": {
                       "type": "integer",
@@ -581,7 +664,9 @@
     },
     "/contacts": {
       "get": {
-        "tags": ["Contacts"],
+        "tags": [
+          "Contacts"
+        ],
         "summary": "Get list of contacts",
         "operationId": "getContacts",
         "description": "Get list of contacts with pagination, sorting and filters",
@@ -621,7 +706,10 @@
             "name": "sortOrder",
             "schema": {
               "type": "string",
-              "enum": ["asc", "desc"],
+              "enum": [
+                "asc",
+                "desc"
+              ],
               "example": "asc"
             }
           }
@@ -633,7 +721,11 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "required": ["status", "message", "data"],
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
                   "properties": {
                     "status": {
                       "type": "integer",
@@ -698,7 +790,9 @@
         }
       },
       "post": {
-        "tags": ["Contacts"],
+        "tags": [
+          "Contacts"
+        ],
         "summary": "Create contact",
         "operationId": "createContact",
         "description": "Create a contact with payload",
@@ -712,7 +806,11 @@
             "multipart/form-data": {
               "schema": {
                 "type": "object",
-                "required": ["name", "phoneNumber", "contactType"],
+                "required": [
+                  "name",
+                  "phoneNumber",
+                  "contactType"
+                ],
                 "properties": {
                   "name": {
                     "description": "Contact's name",
@@ -732,7 +830,10 @@
                   "contactType": {
                     "description": "Type of contact",
                     "type": "string",
-                    "enum": ["personal", "home"],
+                    "enum": [
+                      "personal",
+                      "home"
+                    ],
                     "example": "personal"
                   },
                   "isFavourite": {
@@ -762,7 +863,11 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "required": ["status", "message", "data"],
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
                   "properties": {
                     "status": {
                       "type": "integer",
@@ -789,7 +894,9 @@
     },
     "/contacts/{id}": {
       "get": {
-        "tags": ["Contacts"],
+        "tags": [
+          "Contacts"
+        ],
         "summary": "Get contact by id",
         "operationId": "getContact",
         "description": "Get contact by id",
@@ -816,7 +923,11 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "required": ["status", "message", "data"],
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
                   "properties": {
                     "status": {
                       "type": "integer",
@@ -841,7 +952,9 @@
         }
       },
       "delete": {
-        "tags": ["Contacts"],
+        "tags": [
+          "Contacts"
+        ],
         "summary": "Delete contact by id",
         "operationId": "deleteContact",
         "description": "Delete contact by id",
@@ -871,7 +984,9 @@
         }
       },
       "put": {
-        "tags": ["Contacts"],
+        "tags": [
+          "Contacts"
+        ],
         "summary": "Upsert contact by id",
         "operationId": "upsertContact",
         "description": "Create or replace contact by id",
@@ -896,7 +1011,11 @@
             "multipart/form-data": {
               "schema": {
                 "type": "object",
-                "required": ["name", "phoneNumber", "contactType"],
+                "required": [
+                  "name",
+                  "phoneNumber",
+                  "contactType"
+                ],
                 "properties": {
                   "name": {
                     "type": "string",
@@ -912,7 +1031,10 @@
                   },
                   "contactType": {
                     "type": "string",
-                    "enum": ["personal", "home"],
+                    "enum": [
+                      "personal",
+                      "home"
+                    ],
                     "example": "personal"
                   },
                   "isFavourite": {
@@ -939,7 +1061,11 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "required": ["status", "message", "data"],
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
                   "properties": {
                     "status": {
                       "type": "integer",
@@ -964,7 +1090,11 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "required": ["status", "message", "data"],
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
                   "properties": {
                     "status": {
                       "type": "integer",
@@ -989,7 +1119,9 @@
         }
       },
       "patch": {
-        "tags": ["Contacts"],
+        "tags": [
+          "Contacts"
+        ],
         "summary": "Patch contact by id",
         "operationId": "patchContact",
         "description": "Partially update contact by id",
@@ -1029,7 +1161,10 @@
                   },
                   "contactType": {
                     "type": "string",
-                    "enum": ["personal", "home"],
+                    "enum": [
+                      "personal",
+                      "home"
+                    ],
                     "example": "personal"
                   },
                   "isFavourite": {
@@ -1056,7 +1191,11 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "required": ["status", "message", "data"],
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
                   "properties": {
                     "status": {
                       "type": "integer",
@@ -1092,7 +1231,15 @@
     "schemas": {
       "student": {
         "type": "object",
-        "required": ["_id", "name", "age", "gender", "avgMark", "onDuty"],
+        "required": [
+          "_id",
+          "name",
+          "phoneNumber",
+          "age",
+          "gender",
+          "avgMark",
+          "onDuty"
+        ],
         "properties": {
           "_id": {
             "description": "Student's id",
@@ -1104,22 +1251,31 @@
             "type": "string",
             "example": "John Doe"
           },
+          "phoneNumber": {
+            "description": "Student's phone number",
+            "type": "string",
+            "example": "+380501234567"
+          },
           "age": {
             "description": "Student's age",
             "type": "number",
-            "example": 12
+            "example": 16
           },
           "gender": {
             "description": "Student's gender",
             "type": "string",
-            "enum": ["male", "female", "other"]
+            "enum": [
+              "male",
+              "female",
+              "other"
+            ]
           },
           "avgMark": {
-            "description": "Student's average mark. Should be between 1 and 12",
+            "description": "Student's average mark. Should be between 2 and 15",
             "type": "number",
             "minimum": 1,
-            "maximum": 12,
-            "example": 9.7
+            "maximum": 15,
+            "example": 9
           },
           "onDuty": {
             "description": "Whether is student on duty",
@@ -1171,7 +1327,11 @@
           "contactType": {
             "description": "Type of contact",
             "type": "string",
-            "enum": ["personal", "home"],
+            "enum": [
+              "personal",
+              "home",
+              "work"
+            ],
             "example": "personal"
           },
           "isFavourite": {
@@ -1199,7 +1359,11 @@
           "application/json": {
             "schema": {
               "type": "object",
-              "required": ["status", "message", "data"],
+              "required": [
+                "status",
+                "message",
+                "data"
+              ],
               "properties": {
                 "status": {
                   "type": "integer",
@@ -1211,7 +1375,9 @@
                 },
                 "data": {
                   "type": "object",
-                  "required": ["message"],
+                  "required": [
+                    "message"
+                  ],
                   "properties": {
                     "message": {
                       "type": "string",

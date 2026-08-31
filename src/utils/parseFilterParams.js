@@ -5,6 +5,11 @@ const parseGender = (gender) => {
 
   if (isGender(gender)) return gender;
 };
+const parsePhoneNumber = (phoneNumber) => {
+  const isString = typeof phoneNumber === 'string';
+  if (!isString) return;
+  return phoneNumber.trim();
+};
 
 const parseNumber = (number) => {
   const isString = typeof number === 'string';
@@ -19,8 +24,9 @@ const parseNumber = (number) => {
 };
 
 export const parseFilterParams = (query) => {
-  const { gender, maxAge, minAge, maxAvgMark, minAvgMark } = query;
+  const { gender, maxAge, minAge, maxAvgMark, minAvgMark,phoneNumber } = query;
 
+  const parsedPhoneNumber = parsePhoneNumber(phoneNumber);
   const parsedGender = parseGender(gender);
   const parsedMaxAge = parseNumber(maxAge);
   const parsedMinAge = parseNumber(minAge);
@@ -28,6 +34,7 @@ export const parseFilterParams = (query) => {
   const parsedMinAvgMark = parseNumber(minAvgMark);
 
   return {
+    phoneNumber: parsedPhoneNumber,
     gender: parsedGender,
     maxAge: parsedMaxAge,
     minAge: parsedMinAge,

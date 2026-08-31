@@ -21,6 +21,7 @@ requestBody:
         type: object
         required:
           - name
+          - phoneNumber
           - age
           - gender
           - avgMark
@@ -30,6 +31,10 @@ requestBody:
             description: "Student's name"
             type: string
             example: 'John Doe'
+          phoneNumber:
+            description: "Student's phone number"
+            type: string
+            example: '+380501234567'
           age:
             description: "Student's age"
             type: number

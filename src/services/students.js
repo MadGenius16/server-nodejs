@@ -29,7 +29,9 @@ export const getAllStudents = async ({
   if (filter.minAvgMark) {
     studentsQuery.where('avgMark').gte(filter.minAvgMark);
   }
-
+  if (filter.phoneNumber) {
+    studentsQuery.where('phoneNumber').equals(filter.phoneNumber);
+  }
   if (parentId) {
     studentsQuery.where('parentId').equals(parentId);
   }

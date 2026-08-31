@@ -23,6 +23,9 @@ requestBody:
           name:
             type: string
             example: 'John Doe'
+          phoneNumber:
+            type: string
+            example: '+380501234567'
           age:
             type: number
             example: 12

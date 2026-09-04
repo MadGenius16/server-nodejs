@@ -11,7 +11,7 @@ const reviewsSchema = new Schema({
         type: String,
         required:true,
     },
-    photoURL: {
+    photo: {
         type: String,
         default:null,
     },
